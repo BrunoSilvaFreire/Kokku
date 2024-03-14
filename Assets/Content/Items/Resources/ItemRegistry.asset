@@ -13,5 +13,41 @@ MonoBehaviour:
   m_Name: ItemRegistry
   m_EditorClassIdentifier: 
   _items:
-    keys: []
-    values: []
+    keys:
+    - Value:
+        x: 3214677368
+        y: 1529872183
+        z: 3879829155
+        w: 3560194077
+    - Value:
+        x: 2338109494
+        y: 2947430445
+        z: 1139866013
+        w: 900885782
+    - Value:
+        x: 1531051678
+        y: 2247150219
+        z: 1091237305
+        w: 3883334163
+    - Value:
+        x: 3013041517
+        y: 2955967750
+        z: 2793665412
+        w: 4134871909
+    - Value:
+        x: 4278220019
+        y: 3438018136
+        z: 1968122258
+        w: 712917525
+    - Value:
+        x: 3592752197
+        y: 1169109479
+        z: 1235386809
+        w: 2434010354
+    values:
+    - {fileID: 11400000, guid: bfd299805818d62509cbe2656a248779, type: 2}
+    - {fileID: 11400000, guid: d3ff0a628175b45e7b0383b07e18581b, type: 2}
+    - {fileID: 11400000, guid: a5a398011a9c9aecfa573ac2a328d4ca, type: 2}
+    - {fileID: 11400000, guid: 38f7b422f5f22409e8acd48a83606147, type: 2}
+    - {fileID: 11400000, guid: f2d341f64d5842d3e988192f26d13075, type: 2}
+    - {fileID: 11400000, guid: 0c09a7fa64574e9e9aff358873c0171e, type: 2}

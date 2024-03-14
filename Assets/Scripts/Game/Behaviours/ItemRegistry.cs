@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -26,7 +27,7 @@ namespace Game.Behaviours
         {
             get
             {
-                if (_instance != null)
+                if (_instance == null)
                 {
                     _instance = Resources.Load<ItemRegistry>(nameof(ItemRegistry));
                     if (_instance == null)
@@ -45,11 +46,24 @@ namespace Game.Behaviours
         }
 
         public IReadOnlyCollection<ItemDefinition> AllItems => _items.Values;
+        public IEnumerable<KeyValuePair<Hash128, ItemDefinition>> All => _items;
 #if UNITY_EDITOR
         public void EditorOnlyRegenerateHashes()
         {
+            var newDict = new ItemDictionary();
+            foreach (var item in _items.Values)
+            {
+                var hash = new Hash128(GUID.Generate().ToString(), true);
+                newDict[hash] = item;
+            }
+
+            _items = newDict;
         }
 
+        public void EditorOnlySet(Hash128 hash, ItemDefinition itemDefinition)
+        {
+            _items[hash] = itemDefinition;
+        }
 #endif
     }
 
@@ -63,42 +77,45 @@ namespace Game.Behaviours
     [CustomEditor(typeof(ItemRegistry))]
     public class ItemRegistryEditor : UnityEditor.Editor
     {
-        private ReorderableList _list;
-        private SerializedProperty _listProperty;
-
-        private void OnEnable()
-        {
-            _listProperty = serializedObject.FindProperty("_items").FindPropertyRelative("values");
-            _list = new ReorderableList(
-                serializedObject,
-                _listProperty,
-                true,
-                false,
-                true,
-                true
-            )
-            {
-                drawElementCallback = (rect, index, active, focused) =>
-                {
-                    EditorGUI.PropertyField(rect, _listProperty.GetArrayElementAtIndex(index));
-                },
-                onChangedCallback = _ =>
-                {
-                    serializedObject.ApplyModifiedProperties();
-                } 
-            };
-        }
-
         public override void OnInspectorGUI()
         {
-            _list.DoLayoutList();
-            using (new EditorGUILayout.HorizontalScope())
+            // Button to regenerate hashes
+            if (GUILayout.Button("Generate New Hashes"))
             {
-                if (GUILayout.Button("Generate New Hashes"))
+                ((ItemRegistry)target).EditorOnlyRegenerateHashes();
+            }
+
+            // New button to add all instances of ItemDefinition
+            if (GUILayout.Button("Add All ItemDefinitions"))
+            {
+                AddAllItemDefinitions();
+            }
+        }
+        private void AddAllItemDefinitions()
+        {
+            // Ensure changes are registered in the undo system
+            Undo.RecordObject(target, "Add All ItemDefinitions");
+
+            var registry = (ItemRegistry)target;
+            var guids = AssetDatabase.FindAssets("t:ItemDefinition"); // Find all assets of type ItemDefinition
+
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var itemDefinition = AssetDatabase.LoadAssetAtPath<ItemDefinition>(path);
+
+                if (itemDefinition != null)
                 {
-                    ((ItemRegistry)target).EditorOnlyRegenerateHashes();
+                    // Generate a new hash for the itemDefinition
+                    var hash = new Hash128(GUID.Generate().ToString(), true);
+
+                    // Add the itemDefinition to the registry if not already present
+                    registry.EditorOnlySet(hash, itemDefinition);
                 }
             }
+
+            // Save changes to the registry
+            EditorUtility.SetDirty(target);
         }
     }
 #endif

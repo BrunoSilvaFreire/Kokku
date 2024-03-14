@@ -8,9 +8,9 @@ namespace Game.Behaviours
     [Serializable]
     public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
-        [SerializeField, HideInInspector] private List<TKey> keys;
+        [SerializeField] private List<TKey> keys;
 
-        [SerializeField, HideInInspector] private List<TValue> values;
+        [SerializeField] private List<TValue> values;
 
         public void OnBeforeSerialize()
         {
