@@ -13,18 +13,16 @@ namespace Game.Components
     public struct ItemElement : IBufferElementData
     {
         public Hash128 type;
-        public byte count;
     }
 
     /// <summary>
-    /// Points to entities that contain <see cref="InventoryContentComponent"/> 
+    /// Points to entities that contain <see cref="ItemElement"/> buffers 
     /// </summary>
     public struct TransferItemEventComponent : IComponentData
     {
-        public Entity from;
+        public Entity fromInventory;
         public int fromIndex;
-        public Entity to;
+        public Entity toInventory;
         public int toIndex;
-        public byte count;
     }
 }

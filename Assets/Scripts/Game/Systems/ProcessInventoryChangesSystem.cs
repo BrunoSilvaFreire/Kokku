@@ -1,37 +1,48 @@
+using Game.Components;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace Systems
+namespace Game.Systems
 {
+    [BurstCompile]
     public partial class ProcessInventoryChangesSystem : SystemBase
     {
         protected override void OnUpdate()
         {
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
-            var lookup = GetComponentLookup<InventoryComponent>();
-            Entities.ForEach((Entity entity, in TransferItemEventComponent transfer) =>
+            var lookup = SystemAPI.GetBufferLookup<ItemElement>();
+            foreach (var (transferRef, entity) in SystemAPI.Query<RefRO<TransferItemEventComponent>>()
+                         .WithEntityAccess())
             {
-                if (!lookup.TryGetComponent(transfer.from, out var from))
+                var transfer = transferRef.ValueRO;
+                if (!lookup.TryGetBuffer(transfer.fromInventory, out var from))
                 {
                     return;
                 }
 
-                if (!lookup.TryGetComponent(transfer.from, out var to))
+                if (!lookup.TryGetBuffer(transfer.fromInventory, out var to))
                 {
                     return;
                 }
 
-                var source = from.items[transfer.fromIndex];
-                source.count -= transfer.count;
-                from.items[transfer.fromIndex] = source;
+                var source = from[transfer.fromIndex];
+                var destination = to[transfer.toIndex];
 
-
-                var destination = to.items[transfer.toIndex];
-                destination.count += transfer.count;
-                to.items[transfer.fromIndex] = destination;
-
+                bool isSwap = !source.IsEmpty() && !destination.IsEmpty();
+                if (isSwap)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+                
                 commandBuffer.DestroyEntity(entity);
-            }).Schedule();
+            }
+            commandBuffer.Playback(EntityManager);
+            commandBuffer.Dispose();
         }
     }
 }
