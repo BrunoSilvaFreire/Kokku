@@ -1,3 +1,4 @@
+using Game.Components;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,7 +23,8 @@ namespace Game.Behaviours
         public Entity entityInventory;
         public int index;
     }
-    public struct NeedsItemRefreshTag : IComponentData
+    public class NeedsInventoryInitialization : IComponentData
     {
+        public InventoryType type;
     }
 }

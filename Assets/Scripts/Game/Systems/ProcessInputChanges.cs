@@ -21,7 +21,8 @@ namespace Game.Systems
             }
 
             var commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
-            Entities.ForEach((in InventorySlotClickedEvent slotClickedEvent) =>
+            foreach (var (slotClickedEvent, entity) in SystemAPI.Query<InventorySlotClickedEvent>()
+                         .WithEntityAccess())
             {
                 if (selection.currentlyDragging == Entity.Null)
                 {
@@ -29,21 +30,35 @@ namespace Game.Systems
                 }
                 else
                 {
-                    var transferEntity = commandBuffer.CreateEntity();
                     var src = EntityManager.GetComponentObject<ItemView>(selection.currentlyDragging);
                     var dest = EntityManager.GetComponentObject<ItemView>(slotClickedEvent.slot);
 
 
+                    var transferEntity = commandBuffer.CreateEntity();
                     commandBuffer.AddComponent(transferEntity, new TransferItemEventComponent
                         {
-                            fromInventory = src.inventoryEntity,
-                            fromIndex = src.slotIndex,
-                            toInventory = dest.inventoryEntity,
-                            toIndex = dest.slotIndex
+                            from = new TransferReference
+                            {
+                                inventory = src.inventoryEntity,
+                                index = src.slotIndex,
+                                itemView = selection.currentlyDragging
+                            },
+                            to = new TransferReference
+                            {
+                                inventory = dest.inventoryEntity,
+                                index = dest.slotIndex,
+                                itemView = slotClickedEvent.slot
+                            }
                         }
                     );
+                    selection.currentlyDragging = Entity.Null;
                 }
-            }).WithoutBurst().Run();
+
+                SystemAPI.SetSingleton(selection);
+
+                commandBuffer.DestroyEntity(entity);
+            }
+
             commandBuffer.Playback(EntityManager);
             commandBuffer.Dispose();
         }

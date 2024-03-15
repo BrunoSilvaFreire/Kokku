@@ -6,12 +6,20 @@ using UnityEngine.UI;
 
 namespace Game.Behaviours
 {
-    public class UIEventDispatcher : MonoBehaviour
+    public class InventorySlot : MonoBehaviour
     {
         [SerializeField]
+        private Image _thumbnail;
+        [SerializeField]
+        private Animator _animator;
+        [SerializeField]
         private Button _button;
-        private int _index;
 
+        private Entity _assignedEntity;
+        public Image Thumbnail => _thumbnail;
+
+        public Animator Animator => _animator;
+        
         private void OnEnable()
         {
             _button.onClick.AddListener(OnClicked);
@@ -22,6 +30,14 @@ namespace Game.Behaviours
             _button.onClick.RemoveListener(OnClicked);
         }
 
+        public void SetEntity(Entity entity)
+        {
+            if (_assignedEntity != Entity.Null)
+            {
+                throw new ArgumentException("Inventory slot has had it's entity set more than once.");
+            }
+            _assignedEntity = entity;
+        }
         void OnClicked()
         {
             foreach (var world in World.All)
@@ -40,7 +56,8 @@ namespace Game.Behaviours
             var entity = entityManager.CreateEntity();
             var component = new InventorySlotClickedEvent
             {
-                slotIndex = _index
+                slot = _assignedEntity,
+                slotIndex = transform.GetSiblingIndex()
             };
             entityManager.AddComponentData(entity, component);
         }

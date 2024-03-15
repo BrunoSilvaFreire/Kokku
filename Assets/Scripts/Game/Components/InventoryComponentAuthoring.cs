@@ -10,6 +10,7 @@ namespace Game.Components
     {
         [SerializeField] private int _inventorySize;
 
+        [SerializeField] private InventoryType _type = InventoryType.Main;
         [SerializeField] private bool _addOneOfEachItem = true;
 
         public class InventoryComponentBaker : Baker<InventoryComponentAuthoring>
@@ -17,7 +18,11 @@ namespace Game.Components
             public override void Bake(InventoryComponentAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new InventoryComponent { inventorySize = authoring._inventorySize });
+                AddComponent(entity, new InventoryComponent
+                {
+                    inventorySize = authoring._inventorySize,
+                    type = authoring._type
+                });
                 var buf = AddBuffer<ItemElement>(entity);
                 var size = authoring._inventorySize;
                 buf.Length = size;

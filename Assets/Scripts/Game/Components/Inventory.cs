@@ -4,9 +4,15 @@ using Hash128 = Unity.Entities.Hash128;
 
 namespace Game.Components
 {
+    public enum InventoryType
+    {
+        Main,
+        Hotbar
+    }
     public struct InventoryComponent : IComponentData
     {
         public int inventorySize;
+        public InventoryType type;
     }
 
     [Serializable]
@@ -20,9 +26,14 @@ namespace Game.Components
     /// </summary>
     public struct TransferItemEventComponent : IComponentData
     {
-        public Entity fromInventory;
-        public int fromIndex;
-        public Entity toInventory;
-        public int toIndex;
+        public TransferReference from;
+        public TransferReference to;
+    }
+
+    public struct TransferReference
+    {
+        public Entity inventory;
+        public Entity itemView;
+        public int index;
     }
 }

@@ -9,15 +9,11 @@ namespace Game.Behaviours
 {
     public class ItemViewAuthoring : MonoBehaviour
     {
-        public Image thumbnail;
-        public Animator animator;
 
         public class ItemViewBaker : Baker<ItemViewAuthoring>
         {
             public override void Bake(ItemViewAuthoring authoring)
             {
-                                
-
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 var owner = GetComponentInParent<InventoryComponentAuthoring>();
                 if (owner == null)
@@ -35,11 +31,12 @@ namespace Game.Behaviours
                     {
                         slotIndex = authoring.transform.GetSiblingIndex(),
                         inventoryEntity = inventoryEntity,
-                        thumbnail = authoring.thumbnail,
-                        animator = authoring.animator
                     }
                 );
-                AddComponent<NeedsItemRefreshTag>(entity);
+                AddComponentObject<NeedsInventoryInitialization>(entity, new NeedsInventoryInitialization
+                {
+                    
+                });
             }
         }
     }

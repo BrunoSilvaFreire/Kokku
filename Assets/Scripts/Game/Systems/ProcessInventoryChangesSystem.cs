@@ -1,3 +1,4 @@
+using Game.Behaviours;
 using Game.Components;
 using Unity.Burst;
 using Unity.Collections;
@@ -13,32 +14,36 @@ namespace Game.Systems
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
             var lookup = SystemAPI.GetBufferLookup<ItemElement>();
             foreach (var (transferRef, entity) in SystemAPI.Query<RefRO<TransferItemEventComponent>>()
+                         .WithNone<NeedsInventoryInitialization>()
                          .WithEntityAccess())
             {
                 var transfer = transferRef.ValueRO;
-                if (!lookup.TryGetBuffer(transfer.fromInventory, out var from))
+                if (!lookup.TryGetBuffer(transfer.from.inventory, out var from))
                 {
                     return;
                 }
 
-                if (!lookup.TryGetBuffer(transfer.fromInventory, out var to))
+                if (!lookup.TryGetBuffer(transfer.from.inventory, out var to))
                 {
                     return;
                 }
 
-                var source = from[transfer.fromIndex];
-                var destination = to[transfer.toIndex];
+                var source = from[transfer.from.index];
+                var destination = to[transfer.to.index];
 
-                bool isSwap = !source.IsEmpty() && !destination.IsEmpty();
-                if (isSwap)
+                to[transfer.to.index] = source; 
+                from[transfer.from.index] = destination; 
+
+                commandBuffer.AddComponent(transfer.from.itemView, new NeedsItemUpdate
                 {
-                    
-                }
-                else
+                    index = transfer.from.index,
+                    entityInventory = transfer.from.inventory
+                });
+                commandBuffer.AddComponent(transfer.to.itemView, new NeedsItemUpdate
                 {
-                    
-                }
-                
+                    index = transfer.to.index,
+                    entityInventory = transfer.to.inventory
+                });
                 commandBuffer.DestroyEntity(entity);
             }
             commandBuffer.Playback(EntityManager);

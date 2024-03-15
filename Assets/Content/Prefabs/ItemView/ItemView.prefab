@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.45490196}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 9121538688795823826}
   - component: {fileID: 6076574021748821131}
   - component: {fileID: 117621199420232498}
-  - component: {fileID: 8644368896771156291}
+  - component: {fileID: 6121770801198517714}
   m_Layer: 0
   m_Name: ItemView
   m_TagString: Untagged
@@ -264,7 +264,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8644368896771156291
+--- !u!114 &6121770801198517714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -273,8 +273,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7042014807240656953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b42333e049944a33a780855134423eb0, type: 3}
+  m_Script: {fileID: 11500000, guid: d91ec3cfe2c34760a78a8ec40c2928da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thumbnail: {fileID: 9184569020795943477}
-  animator: {fileID: 117621199420232498}
+  _thumbnail: {fileID: 9184569020795943477}
+  _animator: {fileID: 117621199420232498}
+  _button: {fileID: 6076574021748821131}
