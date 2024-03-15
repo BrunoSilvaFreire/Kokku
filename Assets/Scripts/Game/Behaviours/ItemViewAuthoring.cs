@@ -33,9 +33,9 @@ namespace Game.Behaviours
                         inventoryEntity = inventoryEntity,
                     }
                 );
-                AddComponentObject<NeedsInventoryInitialization>(entity, new NeedsInventoryInitialization
+                AddComponentObject(entity, new NeedsInventoryInitialization
                 {
-                    
+                    type = owner.Type
                 });
             }
         }

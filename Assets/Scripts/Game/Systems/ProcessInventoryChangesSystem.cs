@@ -23,7 +23,7 @@ namespace Game.Systems
                     return;
                 }
 
-                if (!lookup.TryGetBuffer(transfer.from.inventory, out var to))
+                if (!lookup.TryGetBuffer(transfer.to.inventory, out var to))
                 {
                     return;
                 }
