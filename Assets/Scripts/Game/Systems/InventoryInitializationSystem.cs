@@ -46,6 +46,7 @@ namespace Game.Systems
 
                 component.SetEntity(entity);
                 view.thumbnail = component.Thumbnail;
+                view.oldThumbnail = component.OldThumbnail;
                 view.animator = component.Animator;
 
                 var itemBuffer = EntityManager.GetBuffer<ItemElement>(view.inventoryEntity);
@@ -69,7 +70,7 @@ namespace Game.Systems
                     view.thumbnail.sprite = definition.Thumbnail;
                     if (hasItemNow)
                     {
-                        view.animator.SetTrigger(ItemExtensions.ItemEnteringKey);
+                        view.animator.SetTrigger(ItemView.ItemEnteringKey);
                     }
 
                     if (hasItemNow)
@@ -80,7 +81,6 @@ namespace Game.Systems
                 else
                 {
                     view.thumbnail.sprite = null;
-                    view.animator.SetTrigger(ItemExtensions.ItemExitingKey);
                 }
 
                 EntityManager.RemoveComponent<NeedsInventoryInitialization>(entity);

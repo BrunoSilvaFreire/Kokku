@@ -1395,6 +1395,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1340750772}
     m_Modifications:
+    - target: {fileID: 715689717438985615, guid: fd531c342547491689c879c61f835872, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 715689717438985615, guid: fd531c342547491689c879c61f835872, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7042014807240656953, guid: fd531c342547491689c879c61f835872, type: 3}
       propertyPath: m_Name
       value: ItemView (11)

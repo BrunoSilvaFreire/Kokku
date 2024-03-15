@@ -11,13 +11,16 @@ namespace Game.Behaviours
         [SerializeField]
         private Image _thumbnail;
         [SerializeField]
+        private Image _oldThumbnail;
+        [SerializeField]
         private Animator _animator;
         [SerializeField]
         private Button _button;
 
         private Entity _assignedEntity;
-        public Image Thumbnail => _thumbnail;
 
+        public Image Thumbnail => _thumbnail;
+        public Image OldThumbnail => _oldThumbnail;
         public Animator Animator => _animator;
         
         private void OnEnable()
@@ -56,7 +59,7 @@ namespace Game.Behaviours
             var entity = entityManager.CreateEntity();
             var component = new InventorySlotClickedEvent
             {
-                slot = _assignedEntity,
+                itemView = _assignedEntity,
                 slotIndex = transform.GetSiblingIndex()
             };
             entityManager.AddComponentData(entity, component);

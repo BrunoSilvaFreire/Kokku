@@ -11,7 +11,7 @@ namespace Game.Components
 
     public struct InventorySlotClickedEvent : IComponentData
     {
-        public Entity slot;
+        public Entity itemView;
         public int slotIndex;
     }
 }

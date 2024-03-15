@@ -10,7 +10,7 @@ namespace Game.Systems
         public Entity currentlyDragging;
     }
 
-    public partial class ProcessInputChanges : SystemBase
+    public partial class ProcessInputChangesSystem : SystemBase
     {
         protected override void OnUpdate()
         {
@@ -24,14 +24,25 @@ namespace Game.Systems
             foreach (var (slotClickedEvent, entity) in SystemAPI.Query<InventorySlotClickedEvent>()
                          .WithEntityAccess())
             {
+                var viewEntity = slotClickedEvent.itemView;
                 if (selection.currentlyDragging == Entity.Null)
                 {
-                    selection.currentlyDragging = slotClickedEvent.slot;
+                    var view = EntityManager.GetComponentData<ItemView>(viewEntity);
+                    var selectedItem = EntityManager.GetItemElementOfView(view);
+                    if (selectedItem.IsEmpty())
+                    {
+                        view.animator.SetTrigger(ItemView.InvalidItemKey);
+                        
+                    }else
+                    {
+                        selection.currentlyDragging = viewEntity;
+                        view.animator.SetBool(ItemView.DraggingKey, true);
+                    }
                 }
                 else
                 {
                     var src = EntityManager.GetComponentObject<ItemView>(selection.currentlyDragging);
-                    var dest = EntityManager.GetComponentObject<ItemView>(slotClickedEvent.slot);
+                    var dest = EntityManager.GetComponentObject<ItemView>(viewEntity);
 
 
                     var transferEntity = commandBuffer.CreateEntity();
@@ -47,7 +58,7 @@ namespace Game.Systems
                             {
                                 inventory = dest.inventoryEntity,
                                 index = dest.slotIndex,
-                                itemView = slotClickedEvent.slot
+                                itemView = viewEntity
                             }
                         }
                     );

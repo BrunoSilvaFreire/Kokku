@@ -3,42 +3,62 @@ using Game.Behaviours;
 using Game.Components;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Game.Systems
 {
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial class UpdateItemViewSystem : SystemBase
     {
+        private void SetNewItem(ItemView view)
+        {
+        }
+
         protected override void OnUpdate()
         {
             var lookup = GetBufferLookup<ItemElement>();
             var buffer = new EntityCommandBuffer(Allocator.Temp);
             Entities.ForEach((Entity entity, ItemView view, in NeedsItemUpdate update) =>
             {
-                var buf = lookup[update.entityInventory];
-                var element = buf.ElementAt(update.index);
-                if (!ItemRegistry.Instance.TryGet(element.type, out var definition))
+                var element = lookup.GetItemElementAt(update.entityInventory, update.index);
+                var hasItemNow = !element.IsEmpty();
+                var hadItemLastFrame = EntityManager.HasComponent<HasItemTag>(entity);
+                var isSwappingItems = hadItemLastFrame && hasItemNow;
+
+                if (hasItemNow)
                 {
-                    throw new ArgumentException(
-                        $"Item element {element} doesn't have a matching item definition with id {element.type}"
-                    );
+                    if (!ItemRegistry.Instance.TryGet(element.type, out var definition))
+                    {
+                        throw new ArgumentException(
+                            $"Item element {element} doesn't have a matching item definition with id {element.type}"
+                        );
+                    }
+
+
+                    ReplaceSprite(view, definition.Thumbnail);
+                }
+                else
+                {
+                    ReplaceSprite(view, null);
                 }
 
-                var hadItemLastFrame = EntityManager.HasComponent<HasItemTag>(entity);
-                var hasItemNow = !element.IsEmpty();
-                var isSwappingItems = hadItemLastFrame && hasItemNow;
-                view.thumbnail.sprite = definition.Thumbnail;
                 if (!hasItemNow || isSwappingItems)
                 {
-                    view.animator.SetTrigger(ItemExtensions.ItemExitingKey);
-                    buffer.RemoveComponent<HasItemTag>(entity);
+                    view.animator.SetTrigger(ItemView.ItemExitingKey);
                 }
 
                 if (hasItemNow)
                 {
-                    view.animator.SetTrigger(ItemExtensions.ItemEnteringKey);
+                    view.animator.SetTrigger(ItemView.ItemEnteringKey);
                 }
 
+                if (!hasItemNow)
+                {
+                    buffer.RemoveComponent<HasItemTag>(entity);
+                }
+
+                view.animator.SetBool(ItemView.DraggingKey, false);
+                view.animator.Update(0);
                 if (!hadItemLastFrame && hasItemNow)
                 {
                     buffer.AddComponent<HasItemTag>(entity);
@@ -49,6 +69,13 @@ namespace Game.Systems
 
             buffer.Playback(EntityManager);
             buffer.Dispose();
+        }
+
+        private void ReplaceSprite(ItemView view, Sprite newSprite)
+        {
+            Sprite oldSprite = view.thumbnail.sprite;
+            view.thumbnail.sprite = newSprite;
+            view.oldThumbnail.sprite = oldSprite;
         }
     }
 }
