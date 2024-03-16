@@ -4,10 +4,12 @@ using UnityEngine.UI;
 namespace Game.Behaviours
 {
     [CreateAssetMenu]
-    public class UIAssetsConfiguration : ScriptableSingleton<UIAssetsConfiguration>
+    public class UIConfiguration : ScriptableSingleton<UIConfiguration>
     {
         [SerializeField]  private Image _draggingImagePrefab;
-
+        [SerializeField] private KeyCode _toggleKeyCode = KeyCode.Tab;
         public Image DraggingImagePrefab => _draggingImagePrefab;
+
+        public KeyCode ToggleKeyCode => _toggleKeyCode;
     }
 }

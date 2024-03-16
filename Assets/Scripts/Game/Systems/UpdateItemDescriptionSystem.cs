@@ -15,7 +15,7 @@ namespace Game.Systems
                 .WithNone<NeedsItemDescriptionInitialization>()
                 .ForEach((Entity entity, ItemDescriptionView descriptionView, in NeedsItemDescriptionUpdate update) =>
                 {
-                    var itemElement = lookup.GetItemElementAt(update.entityInventory, update.index);
+                    var itemElement = Items.GetItemElementAt(lookup, update.entityInventory, update.index);
                     if (itemElement.IsEmpty())
                     {
                         descriptionView.label.text = string.Empty;

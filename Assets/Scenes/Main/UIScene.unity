@@ -1951,6 +1951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2075619854}
   - component: {fileID: 2075619855}
+  - component: {fileID: 2075619856}
   m_Layer: 0
   m_Name: MainInventory
   m_TagString: Untagged
@@ -2018,6 +2019,21 @@ MonoBehaviour:
   _inventorySize: 30
   _type: 0
   _addOneOfEachItem: 1
+--- !u!114 &2075619856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075619853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5691712b99cd4508b157470ba316fcc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 0
+  KeyCode: 9
+  initiallyOpen: 1
 --- !u!1 &2118158679
 GameObject:
   m_ObjectHideFlags: 0

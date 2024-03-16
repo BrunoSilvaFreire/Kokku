@@ -13,39 +13,38 @@ namespace Game.Systems
         {
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
             var lookup = SystemAPI.GetBufferLookup<ItemElement>();
-            foreach (var (transferRef, entity) in SystemAPI.Query<RefRO<TransferItemEventComponent>>()
-                         .WithNone<NeedsInventoryInitialization>()
-                         .WithEntityAccess())
-            {
-                var transfer = transferRef.ValueRO;
-                if (!lookup.TryGetBuffer(transfer.from.inventory, out var from))
+            Entities
+                .WithNone<NeedsInventoryInitialization>()
+                .ForEach((Entity entity, in TransferItemEventComponent transfer) =>
                 {
-                    return;
-                }
+                    if (!lookup.TryGetBuffer(transfer.from.inventory, out var from))
+                    {
+                        return;
+                    }
 
-                if (!lookup.TryGetBuffer(transfer.to.inventory, out var to))
-                {
-                    return;
-                }
+                    if (!lookup.TryGetBuffer(transfer.to.inventory, out var to))
+                    {
+                        return;
+                    }
 
-                var source = from[transfer.from.index];
-                var destination = to[transfer.to.index];
+                    var source = from[transfer.from.index];
+                    var destination = to[transfer.to.index];
 
-                to[transfer.to.index] = source; 
-                from[transfer.from.index] = destination; 
+                    to[transfer.to.index] = source;
+                    from[transfer.from.index] = destination;
 
-                commandBuffer.AddComponent(transfer.from.itemView, new NeedsItemUpdate
-                {
-                    index = transfer.from.index,
-                    entityInventory = transfer.from.inventory
-                });
-                commandBuffer.AddComponent(transfer.to.itemView, new NeedsItemUpdate
-                {
-                    index = transfer.to.index,
-                    entityInventory = transfer.to.inventory
-                });
-                commandBuffer.DestroyEntity(entity);
-            }
+                    commandBuffer.AddComponent(transfer.from.itemView, new NeedsItemUpdate
+                    {
+                        index = transfer.from.index,
+                        entityInventory = transfer.from.inventory
+                    });
+                    commandBuffer.AddComponent(transfer.to.itemView, new NeedsItemUpdate
+                    {
+                        index = transfer.to.index,
+                        entityInventory = transfer.to.inventory
+                    });
+                    commandBuffer.DestroyEntity(entity);
+                }).WithoutBurst().Run();
             commandBuffer.Playback(EntityManager);
             commandBuffer.Dispose();
         }

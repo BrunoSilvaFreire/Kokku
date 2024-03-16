@@ -16,8 +16,8 @@ namespace Game.Systems
             Entities.WithAll<InventorySlotDragBeginEvent>().ForEach(
                 (Entity entity, ref InventorySlotDragBeginEvent dragBeginEvent) =>
                 {
-                    var wisp = Object.Instantiate(UIAssetsConfiguration.Instance.DraggingImagePrefab);
-                    var element = EntityManager.GetItemElementOfView(dragBeginEvent.itemView);
+                    var wisp = Object.Instantiate(UIConfiguration.Instance.DraggingImagePrefab);
+                    var element = Items.GetItemElementOfView(EntityManager, dragBeginEvent.itemView);
                     wisp.sprite = element.FindDefinition().Thumbnail;
                     wisp.transform.SetParent(GlobalStage.Instance.Canvas.transform);
 

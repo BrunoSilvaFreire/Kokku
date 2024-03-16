@@ -40,7 +40,7 @@ namespace Game.Components
                 buf.Length = size;
                 var empty = new ItemElement
                 {
-                    type = ItemExtensions.NullHash
+                    type = Items.NullHash
                 };
                 for (var i = 0; i < size; i++)
                 {

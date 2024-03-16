@@ -10,17 +10,13 @@ namespace Game.Systems
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public partial class UpdateItemViewSystem : SystemBase
     {
-        private void SetNewItem(ItemView view)
-        {
-        }
-
         protected override void OnUpdate()
         {
             var lookup = GetBufferLookup<ItemElement>();
             var buffer = new EntityCommandBuffer(Allocator.Temp);
             Entities.ForEach((Entity entity, ItemView view, in NeedsItemUpdate update) =>
             {
-                var element = lookup.GetItemElementAt(update.entityInventory, update.index);
+                var element = Items.GetItemElementAt(lookup, update.entityInventory, update.index);
                 var hasItemNow = !element.IsEmpty();
                 var hadItemLastFrame = EntityManager.HasComponent<HasItemTag>(entity);
                 var isSwappingItems = hadItemLastFrame && hasItemNow;
@@ -64,7 +60,7 @@ namespace Game.Systems
             buffer.Dispose();
         }
 
-        private void ReplaceSprite(ItemView view, Sprite newSprite)
+        private static void ReplaceSprite(ItemView view, Sprite newSprite)
         {
             Sprite oldSprite = view.thumbnail.sprite;
             view.thumbnail.sprite = newSprite;

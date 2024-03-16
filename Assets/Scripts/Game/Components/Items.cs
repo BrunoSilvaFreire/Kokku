@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace Game.Components
 {
-    public static class ItemExtensions
+    public static class Items
     {
 
         public static Hash128 NullHash = new Hash128(0, 0, 0, 0);
@@ -14,23 +14,23 @@ namespace Game.Components
             return element.type == NullHash;
         }
 
-        public static ItemElement GetItemElementOfView(this EntityManager entityManager, Entity viewEntity)
+        public static ItemElement GetItemElementOfView( EntityManager entityManager, Entity viewEntity)
         {
             var view = entityManager.GetComponentData<ItemView>(viewEntity);
-            return entityManager.GetItemElementOfView(view);
+            return GetItemElementOfView(entityManager, view);
         }
 
-        public static ItemElement GetItemElementOfView(this EntityManager entityManager, ItemView view)
+        public static ItemElement GetItemElementOfView( EntityManager entityManager, ItemView view)
         {
-            return entityManager.GetItemElementAt(view.inventoryEntity, view.slotIndex);
+            return GetItemElementAt(entityManager, view.inventoryEntity, view.slotIndex);
         }
 
-        public static ItemElement GetItemElementAt(this EntityManager entityManager, Entity inventory, int index)
+        public static ItemElement GetItemElementAt( EntityManager entityManager, Entity inventory, int index)
         {
             var buffer = entityManager.GetBuffer<ItemElement>(inventory);
             return buffer[index];
         }
-        public static ItemElement GetItemElementAt(this BufferLookup<ItemElement> entityManager, Entity inventory, int index)
+        public static ItemElement GetItemElementAt( BufferLookup<ItemElement> entityManager, Entity inventory, int index)
         {
             var buffer = entityManager[inventory];
             return buffer[index];
