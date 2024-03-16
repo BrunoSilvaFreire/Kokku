@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Lighter
   m_EditorClassIdentifier: 
   _thumbnail: {fileID: 21300000, guid: 66a7d95ceb416d041b904f1901077b90, type: 3}
+  _description: A compact, refillable lighter that produces a small flame. Perfect
+    for starting fires, lighting torches, or melting objects. Its portability and
+    ease of use make it a valuable asset for survival and exploration.

@@ -13,3 +13,7 @@ MonoBehaviour:
   m_Name: Wrench
   m_EditorClassIdentifier: 
   _thumbnail: {fileID: 21300000, guid: 09e12be05cc22fadd9e8652c2ddc1888, type: 3}
+  _description: A heavy-duty wrench made of hardened steel, designed for tightening
+    or loosening bolts and nuts. Essential for machinery repair, construction tasks,
+    or as a makeshift weapon. Its robustness and practicality make it a staple in
+    any adventurer's toolkit.

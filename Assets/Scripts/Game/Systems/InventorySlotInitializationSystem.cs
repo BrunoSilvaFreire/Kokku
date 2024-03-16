@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Game.Systems
 {
-    public partial class InventoryInitializationSystem : SystemBase
+    public partial class InventorySlotInitializationSystem : SystemBase
     {
         protected override void OnUpdate()
         {

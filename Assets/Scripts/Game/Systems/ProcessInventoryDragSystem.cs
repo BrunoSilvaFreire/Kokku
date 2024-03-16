@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.Systems
 {
-    public partial class ProcessInputChangesSystem : SystemBase
+    public partial class ProcessInventoryDragSystem : SystemBase
     {
         protected override void OnUpdate()
         {

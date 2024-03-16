@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Bucket
   m_EditorClassIdentifier: 
   _thumbnail: {fileID: 21300000, guid: 1ac67fbaeb855b2d3b21b5ed01c024ca, type: 3}
+  _description: A sturdy, multipurpose metal bucket with a reinforced handle. Ideal
+    for carrying liquids or small items across the game world. Its durability and
+    utility make it an essential tool for various tasks and challenges.
