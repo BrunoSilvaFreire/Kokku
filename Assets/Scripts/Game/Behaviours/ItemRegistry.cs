@@ -18,28 +18,9 @@ namespace Game.Behaviours
     }
 
     [CreateAssetMenu]
-    public class ItemRegistry : ScriptableObject
+    public class ItemRegistry : ScriptableSingleton<ItemRegistry>
     {
         [SerializeField] private ItemDictionary _items;
-        private static ItemRegistry _instance;
-
-        public static ItemRegistry Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = Resources.Load<ItemRegistry>(nameof(ItemRegistry));
-                    if (_instance == null)
-                    {
-                        throw new RegistryNotFoundException<ItemRegistry>();
-                    }
-                }
-
-                return _instance;
-            }
-        }
-
         public bool TryGet(Hash128 hash, out ItemDefinition itemDefinition)
         {
             return _items.TryGetValue(hash, out itemDefinition);
@@ -67,12 +48,6 @@ namespace Game.Behaviours
 #endif
     }
 
-    public class RegistryNotFoundException<T> : Exception
-    {
-        public RegistryNotFoundException() : base($"Unable to load registry of type {nameof(T)}")
-        {
-        }
-    }
 #if UNITY_EDITOR
     [CustomEditor(typeof(ItemRegistry))]
     public class ItemRegistryEditor : UnityEditor.Editor

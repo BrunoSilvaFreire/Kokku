@@ -27,14 +27,7 @@ namespace Game.Systems
 
                 if (hasItemNow)
                 {
-                    if (!ItemRegistry.Instance.TryGet(element.type, out var definition))
-                    {
-                        throw new ArgumentException(
-                            $"Item element {element} doesn't have a matching item definition with id {element.type}"
-                        );
-                    }
-
-
+                    var definition = element.FindDefinition();
                     ReplaceSprite(view, definition.Thumbnail);
                 }
                 else

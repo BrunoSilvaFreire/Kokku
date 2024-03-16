@@ -1,15 +1,30 @@
 using Unity.Entities;
-using Unity.Mathematics;
 
 namespace Game.Components
 {
-    public struct UserInput : IComponentData
+    public struct InventorySlotClickedEvent : IComponentData
     {
-        public float2 mousePosition;
-        public bool clicking;
+        public Entity itemView;
+        public int slotIndex;
     }
 
-    public struct InventorySlotClickedEvent : IComponentData
+    public struct InventorySlotDragBeginEvent : IComponentData
+    {
+        public Entity itemView;
+        public int slotIndex;
+    }
+
+    public struct InventorySlotDragEndEvent : IComponentData
+    {
+        public Entity itemView;
+        public int slotIndex;
+    }
+    public struct InventorySlotHoveredEvent : IComponentData
+    {
+        public Entity itemView;
+        public int slotIndex;
+    }
+    public struct InventorySlotUnhoveredEvent : IComponentData
     {
         public Entity itemView;
         public int slotIndex;

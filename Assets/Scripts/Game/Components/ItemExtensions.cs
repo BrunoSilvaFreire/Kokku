@@ -1,3 +1,4 @@
+using System;
 using Game.Behaviours;
 using Unity.Entities;
 
@@ -33,6 +34,18 @@ namespace Game.Components
         {
             var buffer = entityManager[inventory];
             return buffer[index];
+        }
+
+        public static ItemDefinition FindDefinition(this ItemElement element)
+        {
+            if (!ItemRegistry.Instance.TryGet(element.type, out var definition))
+            {
+                throw new ArgumentException(
+                    $"Item element {element} doesn't have a matching item definition with id {element.type}"
+                );
+            }
+
+            return definition;
         }
     }
 }

@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 121212429}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -665,6 +665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 294886930}
+  - component: {fileID: 294886931}
   - component: {fileID: 294886929}
   - component: {fileID: 294886928}
   - component: {fileID: 294886927}
@@ -758,6 +759,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &294886931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 294886926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24a979d1bfb44a6caa9ddacb095828f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvas: {fileID: 294886929}
 --- !u!1001 &337997881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3195,7 +3209,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 108.17057, y: 108.17057}
+  m_CellSize: {x: 148.5157, y: 148.5157}
   m_Spacing: {x: 7, y: 2.71}
   m_Constraint: 0
   m_ConstraintCount: 6

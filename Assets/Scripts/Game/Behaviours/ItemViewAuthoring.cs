@@ -1,9 +1,7 @@
 using System;
 using Game.Components;
-using TMPro;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Game.Behaviours
 {
