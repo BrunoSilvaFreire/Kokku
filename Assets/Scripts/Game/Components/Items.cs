@@ -6,7 +6,6 @@ namespace Game.Components
 {
     public static class Items
     {
-
         public static Hash128 NullHash = new Hash128(0, 0, 0, 0);
 
         public static bool IsEmpty(this ItemElement element)
@@ -14,29 +13,30 @@ namespace Game.Components
             return element.type == NullHash;
         }
 
-        public static ItemElement GetItemElementOfView( EntityManager entityManager, Entity viewEntity)
+        public static ItemElement GetItemElementOfView(EntityManager entityManager, Entity viewEntity)
         {
             var view = entityManager.GetComponentData<ItemView>(viewEntity);
             return GetItemElementOfView(entityManager, view);
         }
 
-        public static ItemElement GetItemElementOfView( EntityManager entityManager, ItemView view)
+        public static ItemElement GetItemElementOfView(EntityManager entityManager, ItemView view)
         {
             return GetItemElementAt(entityManager, view.inventoryEntity, view.slotIndex);
         }
 
-        public static ItemElement GetItemElementAt( EntityManager entityManager, Entity inventory, int index)
+        public static ItemElement GetItemElementAt(EntityManager entityManager, Entity inventory, int index)
         {
             var buffer = entityManager.GetBuffer<ItemElement>(inventory);
             return buffer[index];
         }
-        public static ItemElement GetItemElementAt( BufferLookup<ItemElement> entityManager, Entity inventory, int index)
+
+        public static ItemElement GetItemElementAt(BufferLookup<ItemElement> entityManager, Entity inventory, int index)
         {
             var buffer = entityManager[inventory];
             return buffer[index];
         }
 
-        public static ItemDefinition FindDefinition(this ItemElement element)
+        public static ItemDefinition FindDefinition(ItemElement element)
         {
             if (!ItemRegistry.Instance.TryGet(element.type, out var definition))
             {
@@ -46,6 +46,11 @@ namespace Game.Components
             }
 
             return definition;
+        }
+
+        public static bool TryFindDefinition(ItemElement element, out ItemDefinition definition)
+        {
+            return ItemRegistry.Instance.TryGet(element.type, out definition);
         }
     }
 }

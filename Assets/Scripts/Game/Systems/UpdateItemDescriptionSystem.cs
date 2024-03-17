@@ -23,7 +23,7 @@ namespace Game.Systems
                     }
                     else
                     {
-                        var definition = itemElement.FindDefinition();
+                        var definition = Items.FindDefinition(itemElement);
                         descriptionView.label.text = definition.name;
                         descriptionView.description.text = definition.Description;
                     }

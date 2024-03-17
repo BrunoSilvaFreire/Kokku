@@ -23,7 +23,7 @@ namespace Game.Systems
 
                 if (hasItemNow)
                 {
-                    var definition = element.FindDefinition();
+                    var definition = Items.FindDefinition(element);
                     ReplaceSprite(view, definition.Thumbnail);
                 }
                 else
