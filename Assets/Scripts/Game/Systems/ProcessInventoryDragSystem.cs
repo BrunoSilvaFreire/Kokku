@@ -11,31 +11,29 @@ namespace Game.Systems
         protected override void OnUpdate()
         {
             var commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
-            var hasDragEntity = SystemAPI.TryGetSingletonEntity<IsItemBeingDraggedTag>(out var dragEntity);
+            var hasDragEntity = SystemAPI.ManagedAPI.TryGetSingletonEntity<DragSource>(out var dragEntity);
             Entities.WithAll<InventorySlotDragBeginEvent>().ForEach(
                 (Entity entity, ref InventorySlotDragBeginEvent dragBeginEvent) =>
                 {
                     var element = Items.GetItemElementOfView(EntityManager, dragBeginEvent.itemView);
-                    EntityManager.CreateSingleton<IsItemBeingDraggedTag>();
                     if (Items.TryFindDefinition(element, out var definition))
                     {
                         var wisp = Object.Instantiate(UIConfiguration.Instance.DraggingImagePrefab);
                         wisp.sprite = definition.Thumbnail;
                         wisp.transform.SetParent(GlobalStage.Instance.Canvas.transform);
-
-                        commandBuffer.AddComponent(
-                            dragBeginEvent.itemView,
-                            new DraggingItem
-                            {
-                                thumbnail = wisp,
-                            }
-                        );
+                        EntityManager.CreateSingleton(new DragSource
+                        {
+                            thumbnail = wisp,
+                            sourceItemView = dragBeginEvent.itemView
+                        });
                     }
 
                     commandBuffer.DestroyEntity(entity);
                 }).WithStructuralChanges().WithoutBurst().Run();
 
             var hasDestination = SystemAPI.TryGetSingleton<DragTether>(out var destination);
+            var hasSource = SystemAPI.ManagedAPI.TryGetSingletonEntity<DragSource>(out var draggedItemEntity);
+
             Entities.ForEach(
                 (Entity entity, ref InventorySlotDragEndEvent dragEndEvent) =>
                 {
@@ -47,9 +45,9 @@ namespace Game.Systems
                     }
 
 
-                    if (EntityManager.HasComponent<DraggingItem>(srcEntity))
+                    if (hasSource)
                     {
-                        var draggingItem = EntityManager.GetComponentObject<DraggingItem>(srcEntity);
+                        var draggingItem = EntityManager.GetComponentObject<DragSource>(draggedItemEntity);
                         Object.Destroy(draggingItem.thumbnail.gameObject);
 
                         if (hasDestination)
@@ -77,7 +75,7 @@ namespace Game.Systems
                             );
                         }
 
-                        commandBuffer.RemoveComponent<DraggingItem>(srcEntity);
+                        commandBuffer.DestroyEntity(draggedItemEntity);
                     }
 
                     commandBuffer.DestroyEntity(entity);

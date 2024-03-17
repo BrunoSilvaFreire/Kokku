@@ -11,7 +11,7 @@ namespace Game.Systems
         protected override void OnUpdate()
         {
             var hasTether = SystemAPI.TryGetSingleton<DragTether>(out var tether);
-            var hasDragEntity = SystemAPI.TryGetSingletonEntity<IsItemBeingDraggedTag>(out var _);
+            var hasDragEntity = SystemAPI.ManagedAPI.TryGetSingleton<DragSource>(out var draggedItem);
             Entities.ForEach((Entity entity, ItemView view) =>
             {
                 DescriptionSelection description = default;
@@ -21,7 +21,7 @@ namespace Game.Systems
                     description = EntityManager.GetComponentData<DescriptionSelection>(view.inventoryEntity);
                 }
 
-                var isDraggingSource = EntityManager.HasComponent<DraggingItem>(entity);
+                var isDraggingSource = hasDragEntity && draggedItem.sourceItemView == entity;
                 var itemElement = Items.GetItemElementOfView(EntityManager, view);
 
                 var isDraggingDestination = hasTether && entity == tether.destinationItemView;

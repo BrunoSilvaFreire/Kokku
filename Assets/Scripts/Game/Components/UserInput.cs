@@ -1,10 +1,12 @@
 using Unity.Entities;
+using UnityEngine.UI;
 
 namespace Game.Components
 {
-    public struct IsItemBeingDraggedTag : IComponentData
+    public class DragSource : IComponentData
     {
-        
+        public Entity sourceItemView;
+        public Image thumbnail;
     }
 
     public struct InventorySlotClickedEvent : IComponentData
