@@ -13,12 +13,15 @@ namespace Game.Behaviours
         [SerializeField] private Image _oldThumbnail;
         [SerializeField] private Animator _animator;
         [SerializeField] private Button _button;
+        [SerializeField] private AudioSource _audioSource;
 
         private Entity _assignedEntity;
 
         public Image Thumbnail => _thumbnail;
         public Image OldThumbnail => _oldThumbnail;
         public Animator Animator => _animator;
+
+        public AudioSource AudioSource => _audioSource;
 
         private void OnEnable()
         {

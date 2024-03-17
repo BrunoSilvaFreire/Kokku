@@ -17,6 +17,7 @@ namespace Game.Behaviours
         public Image thumbnail;
         public Image oldThumbnail;
         public Animator animator;
+        public AudioSource audioSource;
     }
 
     public struct HasItemTag : IComponentData
@@ -27,6 +28,7 @@ namespace Game.Behaviours
     {
         public Entity entityInventory;
         public int index;
+        public bool playSFX;
     }
 
     public class NeedsInventoryInitialization : IComponentData

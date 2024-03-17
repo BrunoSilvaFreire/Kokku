@@ -16,15 +16,23 @@ namespace Game.Systems
             Entities.ForEach((Entity entity, in InventorySlotClickedEvent clicked) =>
             {
                 var view = EntityManager.GetComponentObject<ItemView>(clicked.itemView);
-
-                inventory = view.inventoryEntity;
-                index = view.slotIndex;
+                if (!Items.GetItemElementOfView(EntityManager, view).IsEmpty())
+                {
+                    inventory = view.inventoryEntity;
+                    index = view.slotIndex;
+                    AudioUtility.PlayClipOnItemView(view, UIConfiguration.Instance.ItemClickSound);
+                }
+                else
+                {
+                    view.animator.SetTrigger(ItemView.InvalidItemKey);
+                    AudioUtility.PlayClipOnItemView(view, UIConfiguration.Instance.InvalidClickSound);
+                }
                 commandBuffer.DestroyEntity(entity);
             }).WithoutBurst().Run();
 
             if (inventory != null && index > invalidIndex)
             {
-                Entities.ForEach((Entity entity, ItemDescriptionView view) =>
+                Entities.WithAll<ItemDescriptionView>().ForEach((Entity entity) =>
                 {
                     commandBuffer.AddComponent(entity, new NeedsItemDescriptionUpdate
                     {

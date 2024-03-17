@@ -48,6 +48,7 @@ namespace Game.Systems
                 view.thumbnail = component.Thumbnail;
                 view.oldThumbnail = component.OldThumbnail;
                 view.animator = component.Animator;
+                view.audioSource = component.AudioSource;
 
                 var itemBuffer = EntityManager.GetBuffer<ItemElement>(view.inventoryEntity);
                 if (slot >= itemBuffer.Length)

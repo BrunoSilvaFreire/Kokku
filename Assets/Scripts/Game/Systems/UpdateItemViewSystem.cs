@@ -4,6 +4,7 @@ using Game.Components;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game.Systems
 {
@@ -44,6 +45,29 @@ namespace Game.Systems
                 if (!hasItemNow)
                 {
                     buffer.RemoveComponent<HasItemTag>(entity);
+                }
+
+                if (update.playSFX)
+                {
+                    AudioClip clip = null;
+                    var uiConfiguration = UIConfiguration.Instance;
+                    if (isSwappingItems)
+                    {
+                        clip = uiConfiguration.ItemSwapSound;
+                    }
+                    else if (!hadItemLastFrame && hasItemNow)
+                    {
+                        clip = uiConfiguration.ItemEnterSound;
+                    }
+                    else if (hadItemLastFrame && !hasItemNow)
+                    {
+                        clip = uiConfiguration.ItemExitSound;
+                    }
+
+                    if (clip != null)
+                    {
+                        AudioUtility.PlayClipOnItemView(view, clip, uiConfiguration);
+                    }
                 }
 
                 view.animator.SetBool(ItemView.DraggingKey, false);

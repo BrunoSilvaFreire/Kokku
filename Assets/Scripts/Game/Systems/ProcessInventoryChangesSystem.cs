@@ -36,12 +36,14 @@ namespace Game.Systems
                     commandBuffer.AddComponent(transfer.from.itemView, new NeedsItemUpdate
                     {
                         index = transfer.from.index,
-                        entityInventory = transfer.from.inventory
+                        entityInventory = transfer.from.inventory,
+                        playSFX = false
                     });
                     commandBuffer.AddComponent(transfer.to.itemView, new NeedsItemUpdate
                     {
                         index = transfer.to.index,
-                        entityInventory = transfer.to.inventory
+                        entityInventory = transfer.to.inventory,
+                        playSFX = true
                     });
                     commandBuffer.DestroyEntity(entity);
                 }).WithoutBurst().Run();

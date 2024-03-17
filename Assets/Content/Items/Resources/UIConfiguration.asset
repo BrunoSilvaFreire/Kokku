@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec83104fcd640f2babdb8e81bc198d7, type: 3}
+  m_Name: UIConfiguration
+  m_EditorClassIdentifier: 
+  _draggingImagePrefab: {fileID: 1102550254821042160, guid: 4f3b37f767e2b5b28bca683bc664957f, type: 3}
+  _itemEnterSound: {fileID: 8300000, guid: 0c9b30fb8aad14a37b067b3647a4d888, type: 3}
+  _itemExitSound: {fileID: 8300000, guid: c1f22ea2274224e159b4e26ce4762142, type: 3}
+  _itemSwapSound: {fileID: 8300000, guid: f1633bf1f20edd012877f14a81c50831, type: 3}
+  _invalidClickSound: {fileID: 8300000, guid: 01ebba3a66fc1cd6e8ab114498cd2284, type: 3}
+  _itemClickSound: {fileID: 8300000, guid: 5b39f786772c7f43b959e2d6fc482368, type: 3}
+  _itemSFXPitchRangeMin: 0.9
+  _itemSFXPitchRangeMax: 1.1

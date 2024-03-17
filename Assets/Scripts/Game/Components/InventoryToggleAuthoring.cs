@@ -20,6 +20,7 @@ namespace Game.Components
                     keyCode = authoring.KeyCode,
                     isOpen = authoring.initiallyOpen
                 });
+                AddComponent<NeedsInventoryToggleRefreshTag>(entity);
             }
         }
     }
