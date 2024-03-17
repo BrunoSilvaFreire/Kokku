@@ -12,7 +12,6 @@ namespace Game.Systems
         {
             var commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
             var hasDragEntity = SystemAPI.TryGetSingletonEntity<IsItemBeingDraggedTag>(out var dragEntity);
-            // Handle drag begin events
             Entities.WithAll<InventorySlotDragBeginEvent>().ForEach(
                 (Entity entity, ref InventorySlotDragBeginEvent dragBeginEvent) =>
                 {
@@ -35,9 +34,8 @@ namespace Game.Systems
 
                     commandBuffer.DestroyEntity(entity);
                 }).WithStructuralChanges().WithoutBurst().Run();
-            // Handle drag end events
+
             var hasDestination = SystemAPI.TryGetSingleton<DragTether>(out var destination);
-            Debug.Log($"Drag HasDestination {hasDestination}");
             Entities.ForEach(
                 (Entity entity, ref InventorySlotDragEndEvent dragEndEvent) =>
                 {
