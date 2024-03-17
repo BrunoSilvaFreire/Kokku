@@ -1,6 +1,9 @@
 # ECS Inventory System
 This is an inventory system implementation making hybrid use of Unity's ECS, while also using traditional MonoBehaviours.
 
+In general, the MonoBehaviour side is responsible for pooling events, and creating the appropriate "event entities", 
+and ECS is responsible for the main UI logic, processing user inputs, and updating the corresponding visual 
+representation.  
 ## Architecture
 Since Unity doesnt currently provide an ECS native UI solution, and UI Toolkit doesn't have a robust animation 
 integration, the elected solution is Unity's uGUI system, because it is much more consolidated and allows for
