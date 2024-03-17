@@ -37,6 +37,7 @@ namespace Game.Systems
                 }).WithStructuralChanges().WithoutBurst().Run();
             // Handle drag end events
             var hasDestination = SystemAPI.TryGetSingleton<DragTether>(out var destination);
+            Debug.Log($"Drag HasDestination {hasDestination}");
             Entities.ForEach(
                 (Entity entity, ref InventorySlotDragEndEvent dragEndEvent) =>
                 {
