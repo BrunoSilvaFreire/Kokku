@@ -70,7 +70,7 @@ namespace Game.Systems
                     }
                 }
 
-                view.animator.SetBool(ItemView.DraggingKey, false);
+                view.animator.SetBool(ItemView.SwappingKey, false);
                 view.animator.Update(0);
                 if (!hadItemLastFrame && hasItemNow)
                 {

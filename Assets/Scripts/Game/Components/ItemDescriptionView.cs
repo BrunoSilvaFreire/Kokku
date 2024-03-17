@@ -5,13 +5,19 @@ namespace Game.Components
 {
     public struct NeedsItemDescriptionUpdate : IComponentData
     {
-        public Entity entityInventory;
+        public Entity viewEntity;
+        public Entity inventoryEntity;
         public int index;
     }
 
     public struct NeedsItemDescriptionInitialization : IComponentData
     {
         public InventoryType type;
+    }
+
+    public struct DescriptionSelection : IComponentData
+    {
+        public Entity describedItemView;
     }
 
     public class ItemDescriptionView : IComponentData

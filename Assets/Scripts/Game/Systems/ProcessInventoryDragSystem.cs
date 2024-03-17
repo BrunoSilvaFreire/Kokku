@@ -11,28 +11,30 @@ namespace Game.Systems
         protected override void OnUpdate()
         {
             var commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
-
+            var hasDragEntity = SystemAPI.TryGetSingletonEntity<IsItemBeingDraggedTag>(out var dragEntity);
             // Handle drag begin events
             Entities.WithAll<InventorySlotDragBeginEvent>().ForEach(
                 (Entity entity, ref InventorySlotDragBeginEvent dragBeginEvent) =>
                 {
                     var element = Items.GetItemElementOfView(EntityManager, dragBeginEvent.itemView);
+                    EntityManager.CreateSingleton<IsItemBeingDraggedTag>();
                     if (Items.TryFindDefinition(element, out var definition))
                     {
                         var wisp = Object.Instantiate(UIConfiguration.Instance.DraggingImagePrefab);
                         wisp.sprite = definition.Thumbnail;
                         wisp.transform.SetParent(GlobalStage.Instance.Canvas.transform);
 
-                        commandBuffer.AddComponent(dragBeginEvent.itemView, new DraggingItem
-                        {
-                            itemView = dragBeginEvent.itemView,
-                            thumbnail = wisp,
-                            originalSlotIndex = dragBeginEvent.slotIndex
-                        });
+                        commandBuffer.AddComponent(
+                            dragBeginEvent.itemView,
+                            new DraggingItem
+                            {
+                                thumbnail = wisp,
+                            }
+                        );
                     }
 
                     commandBuffer.DestroyEntity(entity);
-                }).WithoutBurst().Run();
+                }).WithStructuralChanges().WithoutBurst().Run();
             // Handle drag end events
             var hasDestination = SystemAPI.TryGetSingleton<DragTether>(out var destination);
             Entities.ForEach(
@@ -40,6 +42,11 @@ namespace Game.Systems
                 {
                     var srcEntity = dragEndEvent.itemView;
                     var destEntity = destination.destinationItemView;
+                    if (hasDragEntity)
+                    {
+                        commandBuffer.DestroyEntity(dragEntity);
+                    }
+
 
                     if (EntityManager.HasComponent<DraggingItem>(srcEntity))
                     {

@@ -10,7 +10,8 @@ namespace Game.Behaviours
         public const string ItemEnteringKey = "ItemEnter";
         public const string ItemExitingKey = "ItemExit";
         public const string InvalidItemKey = "InvalidItem";
-        public const string DraggingKey = "Dragging";
+        public const string SwappingKey = "Swapping";
+        public const string DescribingKey = "Describing";
 
         public int slotIndex;
         public Entity inventoryEntity;

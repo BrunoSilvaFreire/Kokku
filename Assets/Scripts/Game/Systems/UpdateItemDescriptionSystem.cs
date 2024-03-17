@@ -1,3 +1,4 @@
+using System;
 using Game.Behaviours;
 using Game.Components;
 using Unity.Collections;
@@ -15,21 +16,44 @@ namespace Game.Systems
                 .WithNone<NeedsItemDescriptionInitialization>()
                 .ForEach((Entity entity, ItemDescriptionView descriptionView, in NeedsItemDescriptionUpdate update) =>
                 {
-                    var itemElement = Items.GetItemElementAt(lookup, update.entityInventory, update.index);
+                    var itemElement = Items.GetItemElementAt(lookup, update.inventoryEntity, update.index);
                     if (itemElement.IsEmpty())
                     {
                         descriptionView.label.text = string.Empty;
                         descriptionView.description.text = string.Empty;
+                        commandBuffer.RemoveComponent<DescriptionSelection>(update.inventoryEntity);
                     }
                     else
                     {
                         var definition = Items.FindDefinition(itemElement);
                         descriptionView.label.text = definition.name;
                         descriptionView.description.text = definition.Description;
+
+                        var selection = new DescriptionSelection
+                        {
+                            describedItemView = update.viewEntity
+                        };
+                        if (EntityManager.HasComponent<DescriptionSelection>(update.inventoryEntity))
+                        {
+                            commandBuffer.SetComponent(
+                                update.inventoryEntity,
+                                selection
+                            );
+                        }
+                        else
+                        {
+                            commandBuffer.AddComponent(
+                                update.inventoryEntity,
+                                selection
+                            );
+                        }
                     }
+
 
                     commandBuffer.RemoveComponent<NeedsItemDescriptionUpdate>(entity);
                 }).WithoutBurst().Run();
+
+
             commandBuffer.Playback(EntityManager);
             commandBuffer.Dispose();
         }

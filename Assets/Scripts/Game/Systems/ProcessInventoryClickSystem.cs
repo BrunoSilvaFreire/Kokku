@@ -9,10 +9,13 @@ namespace Game.Systems
     {
         protected override void OnUpdate()
         {
-            var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
-            Entity inventory = Entity.Null;
             const int invalidIndex = -1;
-            int index = invalidIndex;
+
+            var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
+            var inventory = Entity.Null;
+            var viewEntity = Entity.Null;
+            var index = invalidIndex;
+
             Entities.ForEach((Entity entity, in InventorySlotClickedEvent clicked) =>
             {
                 var view = EntityManager.GetComponentObject<ItemView>(clicked.itemView);
@@ -20,6 +23,7 @@ namespace Game.Systems
                 {
                     inventory = view.inventoryEntity;
                     index = view.slotIndex;
+                    viewEntity = clicked.itemView;
                     AudioUtility.PlayClipOnItemView(view, UIConfiguration.Instance.ItemClickSound);
                 }
                 else
@@ -27,6 +31,7 @@ namespace Game.Systems
                     view.animator.SetTrigger(ItemView.InvalidItemKey);
                     AudioUtility.PlayClipOnItemView(view, UIConfiguration.Instance.InvalidClickSound);
                 }
+
                 commandBuffer.DestroyEntity(entity);
             }).WithoutBurst().Run();
 
@@ -37,7 +42,8 @@ namespace Game.Systems
                     commandBuffer.AddComponent(entity, new NeedsItemDescriptionUpdate
                     {
                         index = index,
-                        entityInventory = inventory
+                        viewEntity = viewEntity,
+                        inventoryEntity = inventory
                     });
                 }).WithoutBurst().Run();
             }

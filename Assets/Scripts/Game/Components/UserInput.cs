@@ -2,6 +2,11 @@ using Unity.Entities;
 
 namespace Game.Components
 {
+    public struct IsItemBeingDraggedTag : IComponentData
+    {
+        
+    }
+
     public struct InventorySlotClickedEvent : IComponentData
     {
         public Entity itemView;
