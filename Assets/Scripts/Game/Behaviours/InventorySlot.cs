@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 namespace Game.Behaviours
 {
-    public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+    public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler,
+        IPointerExitHandler
     {
         [SerializeField] private Image _thumbnail;
         [SerializeField] private Image _oldThumbnail;
@@ -61,7 +62,10 @@ namespace Game.Behaviours
             if (_assignedEntity == Entity.Null)
             {
                 throw new Exception(
-                    "Inventory slot has no entity assigned to it. Normally this means that there aren't enough ItemViewAuthoring components in the inventory, or that the inventory is not initialized properly.");
+                    $"Inventory slot {transform.parent.name}/{transform.GetSiblingIndex()} has no entity " +
+                    "assigned to it. Normally this means that there aren't enough ItemViewAuthoring components in " +
+                    "the inventory, or that the inventory is not initialized properly."
+                );
             }
 
             var targetWorld = GetTargetWorld<T>();
@@ -120,6 +124,8 @@ namespace Game.Behaviours
             );
         }
 
-        public void OnDrag(PointerEventData eventData) { }
+        public void OnDrag(PointerEventData eventData)
+        {
+        }
     }
 }
