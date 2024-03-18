@@ -16,7 +16,7 @@ namespace Game.Systems
             var viewEntity = Entity.Null;
             var index = invalidIndex;
 
-            Entities.ForEach((Entity entity, in InventorySlotClickedEvent clicked) =>
+            Entities.ForEach((Entity eventEntity, in InventorySlotClickedEvent clicked) =>
             {
                 var view = EntityManager.GetComponentObject<ItemView>(clicked.itemView);
                 if (!Items.GetItemElementOfView(EntityManager, view).IsEmpty())
@@ -32,7 +32,7 @@ namespace Game.Systems
                     AudioUtility.PlayClipOnItemView(view, UIConfiguration.Instance.InvalidClickSound);
                 }
 
-                commandBuffer.DestroyEntity(entity);
+                commandBuffer.DestroyEntity(eventEntity);
             }).WithoutBurst().Run();
 
             if (inventory != null && index > invalidIndex)

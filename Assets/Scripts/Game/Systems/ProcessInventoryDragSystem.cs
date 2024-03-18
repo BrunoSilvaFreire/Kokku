@@ -13,7 +13,7 @@ namespace Game.Systems
             var commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
             var hasDragEntity = SystemAPI.ManagedAPI.TryGetSingletonEntity<DragSource>(out var dragEntity);
             Entities.WithAll<InventorySlotDragBeginEvent>().ForEach(
-                (Entity entity, ref InventorySlotDragBeginEvent dragBeginEvent) =>
+                (Entity eventEntity, ref InventorySlotDragBeginEvent dragBeginEvent) =>
                 {
                     var element = Items.GetItemElementOfView(EntityManager, dragBeginEvent.itemView);
                     if (Items.TryFindDefinition(element, out var definition))
@@ -28,14 +28,14 @@ namespace Game.Systems
                         });
                     }
 
-                    commandBuffer.DestroyEntity(entity);
+                    commandBuffer.DestroyEntity(eventEntity);
                 }).WithStructuralChanges().WithoutBurst().Run();
 
             var hasDestination = SystemAPI.TryGetSingleton<DragTether>(out var destination);
             var hasSource = SystemAPI.ManagedAPI.TryGetSingletonEntity<DragSource>(out var draggedItemEntity);
 
             Entities.ForEach(
-                (Entity entity, ref InventorySlotDragEndEvent dragEndEvent) =>
+                (Entity eventEntity, ref InventorySlotDragEndEvent dragEndEvent) =>
                 {
                     var srcEntity = dragEndEvent.itemView;
                     var destEntity = destination.destinationItemView;
@@ -78,7 +78,7 @@ namespace Game.Systems
                         commandBuffer.DestroyEntity(draggedItemEntity);
                     }
 
-                    commandBuffer.DestroyEntity(entity);
+                    commandBuffer.DestroyEntity(eventEntity);
                 }).WithoutBurst().Run();
 
             commandBuffer.Playback(EntityManager);

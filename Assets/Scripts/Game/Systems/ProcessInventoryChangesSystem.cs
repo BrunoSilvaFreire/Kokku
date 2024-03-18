@@ -15,7 +15,7 @@ namespace Game.Systems
             var lookup = SystemAPI.GetBufferLookup<ItemElement>();
             Entities
                 .WithNone<NeedsInventoryInitialization>()
-                .ForEach((Entity entity, in TransferItemEventComponent transfer) =>
+                .ForEach((Entity eventEntity, in TransferItemEventComponent transfer) =>
                 {
                     if (!lookup.TryGetBuffer(transfer.from.inventory, out var from))
                     {
@@ -45,7 +45,7 @@ namespace Game.Systems
                         entityInventory = transfer.to.inventory,
                         playSFX = true
                     });
-                    commandBuffer.DestroyEntity(entity);
+                    commandBuffer.DestroyEntity(eventEntity);
                 }).WithoutBurst().Run();
             commandBuffer.Playback(EntityManager);
             commandBuffer.Dispose();

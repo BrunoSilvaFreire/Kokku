@@ -14,7 +14,7 @@ namespace Game.Systems
         protected override void OnUpdate()
         {
             var hasSingleton = SystemAPI.TryGetSingletonEntity<DragTether>(out var singletonEntity);
-            Entities.ForEach((Entity entity, in InventorySlotHoveredEvent hoveredEvent) =>
+            Entities.ForEach((Entity eventEntity, in InventorySlotHoveredEvent hoveredEvent) =>
             {
                 var tether = new DragTether
                 {
@@ -30,7 +30,7 @@ namespace Game.Systems
                     hasSingleton = true;
                 }
 
-                EntityManager.DestroyEntity(entity);
+                EntityManager.DestroyEntity(eventEntity);
             }).WithoutBurst().WithStructuralChanges().Run();
             
             // Here we get the singleton entity again because it may have changed in the previous loop

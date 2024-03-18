@@ -19,8 +19,9 @@ namespace Game.Systems
                     return;
                 }
             }
+
             var worldSpacePosition = Input.mousePosition;
-            worldSpacePosition.z = 1;
+            worldSpacePosition.z = 0;
             Entities.ForEach((DragSource dragSource) =>
             {
                 dragSource.thumbnail.transform.position = worldSpacePosition;

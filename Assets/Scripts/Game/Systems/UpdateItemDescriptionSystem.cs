@@ -22,6 +22,8 @@ namespace Game.Systems
                     {
                         descriptionView.label.text = string.Empty;
                         descriptionView.description.text = string.Empty;
+                        
+                        // Remove old DescriptionSelection singleton entity. 
                         if (hasDescription)
                         {
                             commandBuffer.DestroyEntity(descriptionEntity);
