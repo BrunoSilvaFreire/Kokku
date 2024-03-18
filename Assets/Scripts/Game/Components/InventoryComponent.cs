@@ -1,6 +1,4 @@
-using System;
 using Unity.Entities;
-using Hash128 = Unity.Entities.Hash128;
 
 namespace Game.Components
 {
@@ -13,12 +11,6 @@ namespace Game.Components
     {
         public int inventorySize;
         public InventoryType type;
-    }
-
-    [Serializable]
-    public struct ItemElement : IBufferElementData
-    {
-        public Hash128 type;
     }
 
     /// <summary>

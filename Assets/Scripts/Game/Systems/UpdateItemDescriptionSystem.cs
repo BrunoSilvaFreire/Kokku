@@ -1,5 +1,3 @@
-using System;
-using Game.Behaviours;
 using Game.Components;
 using Unity.Collections;
 using Unity.Entities;
@@ -20,14 +18,7 @@ namespace Game.Systems
                     var itemElement = Items.GetItemElementAt(lookup, update.inventoryEntity, update.index);
                     if (itemElement.IsEmpty())
                     {
-                        descriptionView.label.text = string.Empty;
-                        descriptionView.description.text = string.Empty;
-                        
-                        // Remove old DescriptionSelection singleton entity. 
-                        if (hasDescription)
-                        {
-                            commandBuffer.DestroyEntity(descriptionEntity);
-                        }
+                        commandBuffer.AddComponent<NeedsItemDescriptionClearTag>(entity);
                     }
                     else
                     {
@@ -37,7 +28,8 @@ namespace Game.Systems
 
                         var selection = new DescriptionSelection
                         {
-                            describedItemView = update.viewEntity
+                            describedItemView = update.viewEntity,
+                            describedItem = itemElement
                         };
                         if (hasDescription)
                         {
@@ -55,7 +47,6 @@ namespace Game.Systems
 
                     commandBuffer.RemoveComponent<NeedsItemDescriptionUpdate>(entity);
                 }).WithStructuralChanges().WithoutBurst().Run();
-
 
             commandBuffer.Playback(EntityManager);
             commandBuffer.Dispose();

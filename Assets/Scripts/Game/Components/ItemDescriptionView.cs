@@ -10,6 +10,10 @@ namespace Game.Components
         public int index;
     }
 
+    public struct NeedsItemDescriptionClearTag : IComponentData
+    {
+    }
+
     public struct NeedsItemDescriptionInitialization : IComponentData
     {
         public InventoryType type;
@@ -18,6 +22,7 @@ namespace Game.Components
     public struct DescriptionSelection : IComponentData
     {
         public Entity describedItemView;
+        public ItemElement describedItem;
     }
 
     public class ItemDescriptionView : IComponentData
