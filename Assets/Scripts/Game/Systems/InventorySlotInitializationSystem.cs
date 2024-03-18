@@ -25,6 +25,7 @@ namespace Game.Systems
                 if (inventoryView == null)
                 {
                     Debug.LogError($"Unable to find InventoryView of type {init.type:G}");
+                    buffer.DestroyEntity(entity);
                     return;
                 }
 
