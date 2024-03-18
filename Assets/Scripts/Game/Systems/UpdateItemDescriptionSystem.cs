@@ -12,6 +12,7 @@ namespace Game.Systems
         {
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
             var lookup = SystemAPI.GetBufferLookup<ItemElement>();
+            var hasDescription = SystemAPI.TryGetSingletonEntity<DescriptionSelection>(out var descriptionEntity);
             Entities
                 .WithNone<NeedsItemDescriptionInitialization>()
                 .ForEach((Entity entity, ItemDescriptionView descriptionView, in NeedsItemDescriptionUpdate update) =>
@@ -21,7 +22,10 @@ namespace Game.Systems
                     {
                         descriptionView.label.text = string.Empty;
                         descriptionView.description.text = string.Empty;
-                        commandBuffer.RemoveComponent<DescriptionSelection>(update.inventoryEntity);
+                        if (hasDescription)
+                        {
+                            commandBuffer.DestroyEntity(descriptionEntity);
+                        }
                     }
                     else
                     {
@@ -33,25 +37,22 @@ namespace Game.Systems
                         {
                             describedItemView = update.viewEntity
                         };
-                        if (EntityManager.HasComponent<DescriptionSelection>(update.inventoryEntity))
+                        if (hasDescription)
                         {
                             commandBuffer.SetComponent(
-                                update.inventoryEntity,
+                                descriptionEntity,
                                 selection
                             );
                         }
                         else
                         {
-                            commandBuffer.AddComponent(
-                                update.inventoryEntity,
-                                selection
-                            );
+                            EntityManager.CreateSingleton(selection);
                         }
                     }
 
 
                     commandBuffer.RemoveComponent<NeedsItemDescriptionUpdate>(entity);
-                }).WithoutBurst().Run();
+                }).WithStructuralChanges().WithoutBurst().Run();
 
 
             commandBuffer.Playback(EntityManager);
