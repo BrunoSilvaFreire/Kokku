@@ -2,7 +2,6 @@ using System;
 using Game.Behaviours;
 using Unity.Entities;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game.Components
 {

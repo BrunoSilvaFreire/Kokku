@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace Game.Behaviours
 {
+    /// <summary>
+    /// ItemDefinition is a ScriptableObject that holds references to the thumbnail and description of an item.
+    /// <seealso cref="ItemRegistry"/>
+    /// </summary>
     [CreateAssetMenu]
     public class ItemDefinition : ScriptableObject
     {

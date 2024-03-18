@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 namespace Game.Behaviours
 {
+    /// <summary>
+    /// InventorySlot is a MonoBehaviour that represents a single slot in the inventory. It is responsible for handling
+    /// UI events and dispatching them as ECS events. Also, they hold references to the UI components for ECS to use.
+    /// </summary>
     public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler,
         IPointerExitHandler
     {

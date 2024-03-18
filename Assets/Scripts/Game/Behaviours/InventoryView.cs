@@ -6,6 +6,12 @@ using UnityEngine;
 
 namespace Game.Behaviours
 {
+    /// <summary>
+    /// InventoryView is a MonoBehaviour that represents the main UI for an inventory, either the Main Inventory or the
+    /// Hotbar.
+    /// <seealso cref="InventorySlot"/>
+    /// <seealso cref="InventoryType"/>
+    /// </summary>
     public class InventoryView : MonoBehaviour
     {
         public const string IsOpenKey = "IsOpen";

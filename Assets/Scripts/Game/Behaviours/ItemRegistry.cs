@@ -17,6 +17,10 @@ namespace Game.Behaviours
     {
     }
 
+    /// <summary>
+    /// ItemRegistry is the main database for items in the game. Each Item type is identified by a <see cref="Hash128"/>
+    /// and has a corresponding <see cref="ItemDefinition"/>.
+    /// </summary>
     [CreateAssetMenu]
     public class ItemRegistry : ScriptableSingleton<ItemRegistry>
     {
@@ -66,6 +70,7 @@ namespace Game.Behaviours
                 AddAllItemDefinitions();
             }
         }
+
         private void AddAllItemDefinitions()
         {
             // Ensure changes are registered in the undo system
